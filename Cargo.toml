@@ -1,6 +1,6 @@
 [package]
 name = "everustc"
-version = "0.1.0"
+version = "0.1.1"
 authors = ["Stephane Raux <stephaneyfx@gmail.com>"]
 description = "Command-line rust code evaluator."
 license = "MIT"
