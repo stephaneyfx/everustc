@@ -10,4 +10,5 @@ keywords = ["evaluate", "interpret", "interpreter", "repl"]
 
 [dependencies]
 everust = "0.3.0"
+getopts = "0.2.14"
 rustyline = "1.0.0"

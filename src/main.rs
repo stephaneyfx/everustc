@@ -3,16 +3,22 @@
 #![deny(warnings)]
 
 extern crate everust;
+extern crate getopts;
 extern crate rustyline;
 
+use getopts::Options;
 use rustyline::Editor;
 use rustyline::error::ReadlineError;
 use std::error::Error;
 use std::fmt::{Display, self};
 use std::io::{self, stderr, stdout, Write};
 
+const PROGRAM_NAME: &'static str = env!("CARGO_PKG_NAME");
+const PROGRAM_VERSION: &'static str = env!("CARGO_PKG_VERSION");
+
 #[derive(Debug)]
 enum ProgError {
+    Args(getopts::Fail),
     ReadLine(ReadlineError),
     Stderr(io::Error),
     Stdout(io::Error),
@@ -21,6 +27,7 @@ enum ProgError {
 impl Error for ProgError {
     fn cause(&self) -> Option<&Error> {
         match *self {
+            ProgError::Args(ref e) => Some(e),
             ProgError::ReadLine(ref e) => Some(e),
             ProgError::Stderr(ref e) => Some(e),
             ProgError::Stdout(ref e) => Some(e),
@@ -29,6 +36,7 @@ impl Error for ProgError {
 
     fn description(&self) -> &str {
         match *self {
+            ProgError::Args(_) => "Error in the command-line arguments",
             ProgError::ReadLine(_) => "Failed to read line",
             ProgError::Stderr(_) => "Error on stderr",
             ProgError::Stdout(_) => "Error on stdout",
@@ -39,6 +47,12 @@ impl Error for ProgError {
 impl Display for ProgError {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         write!(f, "{}", self.description())
+    }
+}
+
+impl From<getopts::Fail> for ProgError {
+    fn from(e: getopts::Fail) -> ProgError {
+        ProgError::Args(e)
     }
 }
 
@@ -91,6 +105,32 @@ fn to_exit_code(r: Result<(), ProgError>) -> i32 {
     1
 }
 
+fn run() -> Result<(), ProgError> {
+    let mut opts = Options::new();
+    opts.optflag("h", "help", "Display this help message")
+        .optflag("v", "version", "Display version information");
+    let mut args = std::env::args_os();
+    args.next();
+    let options = opts.parse(args)?;
+    if options.opt_present("help") {
+        return print_help(&opts)
+    }
+    if options.opt_present("version") {
+        return print_version()
+    }
+    run_repl()
+}
+
+fn print_help(opts: &Options) -> Result<(), ProgError> {
+    writeln!(stdout(), "{}", opts.usage(&opts.short_usage(PROGRAM_NAME)))
+        .map_err(ProgError::Stdout)
+}
+
+fn print_version() -> Result<(), ProgError> {
+    writeln!(stdout(), "{} {}", PROGRAM_NAME, PROGRAM_VERSION)
+        .map_err(ProgError::Stdout)
+}
+
 fn main() {
-    std::process::exit(to_exit_code(run_repl()))
+    std::process::exit(to_exit_code(run()))
 }
