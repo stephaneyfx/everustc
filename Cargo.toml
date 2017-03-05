@@ -9,5 +9,5 @@ repository = "https://github.com/stephaneyfx/everustc.git"
 keywords = ["evaluate", "interpret", "interpreter", "repl"]
 
 [dependencies]
-everust = "0.2.0"
+everust = "0.3.0"
 rustyline = "1.0.0"
