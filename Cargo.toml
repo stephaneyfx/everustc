@@ -7,6 +7,7 @@ license = "MIT"
 homepage = "https://github.com/stephaneyfx/everustc"
 repository = "https://github.com/stephaneyfx/everustc.git"
 keywords = ["evaluate", "interpret", "interpreter", "repl"]
+categories = ["command-line-interface", "command-line-utilities"]
 
 [dependencies]
 everust = "0.3.0"
