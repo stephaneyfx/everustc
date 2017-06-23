@@ -13,8 +13,8 @@ use std::error::Error;
 use std::fmt::{Display, self};
 use std::io::{self, stderr, stdout, Write};
 
-const PROGRAM_NAME: &'static str = env!("CARGO_PKG_NAME");
-const PROGRAM_VERSION: &'static str = env!("CARGO_PKG_VERSION");
+const PROGRAM_NAME: &str = env!("CARGO_PKG_NAME");
+const PROGRAM_VERSION: &str = env!("CARGO_PKG_VERSION");
 
 #[derive(Debug)]
 enum ProgError {
