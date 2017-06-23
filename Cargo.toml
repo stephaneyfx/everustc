@@ -4,7 +4,7 @@ version = "0.1.1"
 authors = ["Stephane Raux <stephaneyfx@gmail.com>"]
 description = "Command-line rust code evaluator."
 license = "MIT"
-homepage = "https://github.com/stephaneyfx/everustc.git"
+homepage = "https://github.com/stephaneyfx/everustc"
 repository = "https://github.com/stephaneyfx/everustc.git"
 keywords = ["evaluate", "interpret", "interpreter", "repl"]
 
